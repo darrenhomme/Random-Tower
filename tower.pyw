@@ -1,4 +1,8 @@
+#!/usr/bin/env python3
+
 import random
+import time, datetime
+from PIL import ImageColor
 
 #make it kind of random
 rng = random.SystemRandom()
@@ -7,20 +11,20 @@ random.seed(rng.randint(1, 1000))
 #color codes and min prices
 def MakeCategorie(color, minPrice):
     categorie = {}
-    categorie['color']    = color
+    categorie['color']    = ImageColor.getrgb(color)
     categorie['minPrice'] = minPrice
     return categorie
 
-categories = {}
-categories['jewelry'] = MakeCategorie('#008ad0', 500.0)
-categories['watches'] = MakeCategorie('#fdb90b', 200.0)
-categories['fashion'] = MakeCategorie('#6460ac', 20.0)
-categories['health']  = MakeCategorie('#f3711b', 30.0)
-categories['beauty']  = MakeCategorie('#daa9bf', 50.0)
-categories['home']    = MakeCategorie('#04b34a', 75.0)
-categories['food']    = MakeCategorie('#c91e49', 50.0)
-
-cat = random.choice(list(categories.keys()))
+def GetCategories():
+    categories = {}
+    categories['jewelry'] = MakeCategorie('#008ad0', 500.0)
+    categories['watches'] = MakeCategorie('#fdb90b', 200.0)
+    categories['fashion'] = MakeCategorie('#6460ac', 20.0)
+    categories['health']  = MakeCategorie('#f3711b', 30.0)
+    categories['beauty']  = MakeCategorie('#daa9bf', 50.0)
+    categories['home']    = MakeCategorie('#04b34a', 75.0)
+    categories['food']    = MakeCategorie('#c91e49', 50.0)
+    return categories
 
 #sku / item number
 def GetItemNumber():
@@ -75,23 +79,26 @@ def GetTypes():
     types['food']    = ['cheesecake', 'steak', 'chicken breast pack', 'pork rib rack', 'shrimp platter', 'lobster tails', 'salmon fillet', 'croissant', 'bagel', 'sourdough loaf', 'cookie tin', 'brownie tray', 'cupcake assortment', 'candy box', 'caramel apple', 'popcorn tin', 'holiday ham', 'pasta kit', 'breakfast bundle', 'gourmet gift basket']
     return types
 
-def GetTopline(cat):
+def GetTopline(item):
+    category = item['category']
     brands    = GetBrands()
     materials = GetMaterials()
     aspects   = GetAspects()
     types     = GetTypes()
 
-    if cat in brands.keys():
-        return random.choice(brands[cat]) + ' ' + ( random.choice(materials[cat]) + ' ' + random.choice(aspects[cat]) + ' ' + random.choice(types[cat]) ).title()
+    if category in brands.keys():
+        return random.choice(brands[category]) + ' ' + ( random.choice(materials[category]) + ' ' + random.choice(aspects[category]) + ' ' + random.choice(types[category]) ).title()
     else:
         return ''
 
 #prices
-def GetPrices(cat, categories):
+def GetPrices(item):
+    categories = item['categories']
+    category   = item['category']
     markdown   = random.choice([False, False, True])
     pricerange = random.choice([1, 1, 1, 1, 2, 3])
 
-    base = random.uniform(categories[cat]['minPrice'], categories[cat]['minPrice']*2)
+    base = random.uniform(categories[category]['minPrice'], categories[category]['minPrice']*2)
     
     lists = []
     sales = []
@@ -116,11 +123,13 @@ def GetPrices(cat, categories):
         vps.append(x/vp)
 
     prices = {}
-    prices['list'] = lists
-    prices['sale'] = sales
-    prices['vp']   = vp
-    prices['vps']  = vps
-    return prices
+    prices['markdown'] = markdown
+    prices['list']     = lists
+    prices['sale']     = sales
+    prices['vp']       = vp
+    prices['vps']      = vps
+    
+    return prices 
 
 #price handle
 def GetHandle(prices):
@@ -130,13 +139,18 @@ def GetHandle(prices):
         return 'ShopHQ PRICE'
 
 #tower color
-def GetColor(handle, cat, categories):
+def GetColor(item):
+    handle     = item['handle']
+    categories = item['categories']
+    category   = item['category']
+    
     colors = {}
     colors['red']  = '#e04035'
     colors['only'] = '#db0b5b'
     colors['must'] = '#b41b81'
     colors['deal'] = '#e7519d'
     colors['base'] = '#0e76bc'
+    
     if 'TOP' in handle and 'DEAL' in handle:
         return colors['red']
     elif 'ONCE' in handle and 'ONLY' in handle:
@@ -148,11 +162,12 @@ def GetColor(handle, cat, categories):
     elif 'DEAL' in handle:
         return colors['deal']
     else:
-        #return categories[cat]['color']
         return colors['base']
 
 #banner
-def GetBanner(cat):
+def GetBanner(item):
+    cat = item['category']
+    
     banner = random.choice(['30-Day Money Back Guarantee', '30-Day Money Back Guarantee', '30-Day Money Back Guarantee', '60-Day Money Back Guarantee', '90-Day Money Back Guarantee', 'BMSM%', 'BMSM$', 'PWP%', 'PWP$'])
     if banner == 'BMSM%':
         banner = 'Buy One, Get One for ' + str(random.choice([10, 15, 15, 20])) + '% OFF'
@@ -166,7 +181,32 @@ def GetBanner(cat):
             banner = 'Add ' + number + ' - ' + item + ' - Receive ' + str(random.choice([10, 15, 15, 20])) + '% OFF'
         if banner == 'PWP$':
             banner = 'Add ' + number + ' - ' + item + ' - Save $' + str(random.choice([3, 5, 5, 10]))
+            
     return banner
+
+#coupon
+def GetCoupon(item):
+    coupon = {}
+    coupon['kind'] = random.choice([None, None, 'ALL', item['category']])
+
+    if coupon['kind'] != None:
+        coupon['discount'] = random.randint(1, 6) * 10
+        coupon['line1']    = f"{coupon['discount']}% OFF"
+
+        days = random.randint(1, 5)
+        end = (datetime.date.today() + datetime.timedelta(days=days)).strftime("%m/%d")
+        coupon['time']     = f"Now - {end} at 11:59pm ET"
+    
+    if coupon['kind'] == 'ALL':
+        coupon['line2'] = 'ALL ORDERS'
+        coupon['code']  = f"SHOPHQ{coupon['discount']}"
+        coupon['url']   = f"ShopHQ.com/{coupon['code']}"
+    elif coupon['kind'] != None:
+        coupon['line2'] = f"{item['category'].upper()} ORDERS"
+        coupon['code']  = f"{item['category'].upper()}{coupon['discount']}"
+        coupon['url']   = f"ShopHQ.com/{item['category']}"
+
+    return coupon
 
 #price formatting
 def PriceRange(price):
@@ -179,45 +219,50 @@ def PriceRange(price):
     else:
         return '$'
 
+def Item():
+    item = {}
+    item['itemNumber']  = ''
+    item['categories']  = ''
+    item['category']    = ''
+    item['description'] = ''
+    item['markdown']    = ''
+    item['listPrice']   = ''
+    item['color']       = (0, 0, 0)
+    item['handle']      = ''
+    item['salePrice']   = ''
+    item['payments']    = 0
+    item['vpPrice']     = ''
+    item['banner']      = ''
+    item['coupon']      = ''
+    item['x']           = 0
+    item['y']           = 0
+    item['image']       = ''
+
+    return item
+
 #main tower maker
 def MakeItem():
-    number      = GetItemNumber()
-    description = GetTopline(cat)
-    prices      = GetPrices(cat, categories)
-    lists       = 'ShopHQ Price ' + PriceRange(prices['list'])
-    handle     = GetHandle(prices)
-    sales      = PriceRange(prices['sale'])
-    vp         = prices['vp']
-    vps        = str(vp) + ' ValuePay ' + PriceRange(prices['vps']) + '®'
-    color      = GetColor(handle, cat, categories)
-    banner     = GetBanner(cat)
+    item = Item()
+    
+    item['categories']  = GetCategories()
+    item['category']    = random.choice(list(item['categories'].keys()))
+    prices              = GetPrices(item)
 
-    if (prices['list'][0] > prices['sale'][0] and prices['list'][-1] > prices['sale'][-1]):
-        markdown     = True
-        saleRoudning = 0
-    else:
-        markdown     = False
-        saleRoudning = 15
-        
-    tower = {}
-    
-    tower['intList']        = int(markdown)         * 100
-    tower['intSale']        = saleRoudning
-    tower['intVp']          = int((vp > 1))         * 100
-    tower['intBanner']      = int(bool(banner))     * 100
-    
-    tower['intX']           = random.randint(0, 10) * 100
+    item['itemNumber']  = GetItemNumber()
+    item['description'] = GetTopline(item)
 
-    tower['intYlist']       = int(not(markdown))     * 40
-    tower['intYvp']         = int((vp < 2))          * 50
-    
-    tower['txtNumber']      = number
-    tower['txtDescription'] = description
-    tower['txtList']        = lists
-    tower['txtHandle']      = handle
-    tower['txtSale']        = sales
-    tower['txtVp']          = vps
-    tower['txtBanner']      = banner
-    tower['txtColor']       = color
+    item['markdown']    = prices['markdown']
+    item['listPrice']   = prices['list']
+    item['handle']      = GetHandle(prices)
+    item['color']       = GetColor(item)
+    item['salePrice']   = prices['sale']
+    item['payments']    = prices['vp']
+    item['vpPrice']     = prices['vps']
+    item['banner']      = GetBanner(item)
+    item['coupon']      = GetCoupon(item)
+
+    item['x']           = x = random.randint(123, int(1920*.75))
+    print(item)
+    return item
 
 MakeItem()
