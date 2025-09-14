@@ -12,13 +12,13 @@ def MakeCategorie(color, minPrice):
     return categorie
 
 categories = {}
-categories['jewelry'] = MakeCategorie('$008ad0', 500.0)
-categories['watches'] = MakeCategorie('$fdb90b', 200.0)
-categories['fashion'] = MakeCategorie('$6460ac', 20.0)
-categories['health']  = MakeCategorie('$f3711b', 30.0)
-categories['beauty']  = MakeCategorie('$daa9bf', 50.0)
-categories['home']    = MakeCategorie('$04b34a', 75.0)
-categories['food']    = MakeCategorie('$c91e49', 50.0)
+categories['jewelry'] = MakeCategorie('#008ad0', 500.0)
+categories['watches'] = MakeCategorie('#fdb90b', 200.0)
+categories['fashion'] = MakeCategorie('#6460ac', 20.0)
+categories['health']  = MakeCategorie('#f3711b', 30.0)
+categories['beauty']  = MakeCategorie('#daa9bf', 50.0)
+categories['home']    = MakeCategorie('#04b34a', 75.0)
+categories['food']    = MakeCategorie('#c91e49', 50.0)
 
 cat = random.choice(list(categories.keys()))
 
@@ -132,11 +132,11 @@ def GetHandle(prices):
 #tower color
 def GetColor(handle, cat, categories):
     colors = {}
-    colors['red']  = '$e04035'
-    colors['only'] = '$db0b5b'
-    colors['must'] = '$b41b81'
-    colors['deal'] = '$e7519d'
-    colors['base'] = '$0e76bc'
+    colors['red']  = '#e04035'
+    colors['only'] = '#db0b5b'
+    colors['must'] = '#b41b81'
+    colors['deal'] = '#e7519d'
+    colors['base'] = '#0e76bc'
     if 'TOP' in handle and 'DEAL' in handle:
         return colors['red']
     elif 'ONCE' in handle and 'ONLY' in handle:
