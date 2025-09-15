@@ -35,48 +35,202 @@ def GetItemNumber():
 #topline info
 def GetBrands():
     brands = {}
-    brands['jewelry'] = ['Invicta Reserve Jewelry', 'Gems en Vogue', 'Dallas Prince Designs', 'Pamela McCoy Jewelry', 'Michael Valitutti', 'Sonia Bitton', 'Joya', 'Victoria Wieck', 'Signare', 'Chuck Clemency', 'Effy Jewelry', 'Paul Deasy Designs', 'Gem Treasures', 'Kristen Amato', 'Tagliamonte', 'NYC II Jewelry', 'Hanover Jewelry', 'One World Jewelry', 'Park Avenue Collection', 'Passage to Israel']
-    brands['watches'] = ['Invicta', 'Bulova', 'Seiko', 'Citizen', 'Movado', 'Glycine', 'Aragon', 'Bulova Accutron', 'Swiss Legend', 'Android', 'Stuhrling Original', 'Croton', 'Akribos XXIV', 'Tissot', 'Raymond Weil', 'Renato', 'Swiss Military', 'Edox', 'Versace Watches', 'Mondaine']
-    brands['fashion'] = ['One World', 'Kate & Mallory', 'Jill Martin', 'WDNY', 'Pamela McCoy Fashions', 'Onyx Nite', 'Guiliana Rancic Collection', 'Indigo Thread Co.', 'Donna Salyers Fabulous Furs', 'Marc Bouwer', 'Christopher & Banks (exclusive lines)', 'Maya Collection', 'Karl Lagerfeld Paris', 'MarlaWynne', 'Fit 4 U', 'Couture Collection by Antthony', 'Sharif Handbags & Fashion', 'Brooks Brothers (licensed apparel)', 'Love, Carson by Carson Kressley', 'OSO Casuals']
-    brands['beauty']  = ['Skinn Cosmetics', 'Elizabeth Grant', 'Isomers Skincare', 'Consult Beaute by Heather & Terry Dubrow', 'Beekman 1802', 'Ready to Wear', 'Michael Todd Beauty', 'Manuela Marcheggiani Skincare', 'PRAI Beauty', 'Serious Skincare', 'Pure Cosmetics', 'Trilogy Skincare', 'Foreo', 'Suzanne Somers Organics', 'Dermelect', 'Grande Cosmetics', 'Peter Thomas Roth', 'L’Occitane', 'BeautyBio', 'StriVectin']
-    brands['health']  = ['Vitauthority', 'Dr. Dubrow Health & Wellness', 'Beekman 1802 (supplements & wellness)', 'Consult Health by Heather & Terry Dubrow', 'True2Life Supplements', 'PurCore Nutrition', 'Isomers Wellness', 'PRAI Ageless Nutrition', 'PureHealth Research', 'Herbal Harvest', 'VitaTree Nutritionals', 'Probiotic America', 'Joyce Giraud Renewal Supplements', 'Andrew Lessman Procaps', 'Nature’s Code', 'Invigorate Health', 'Swisa Beauty Wellness', 'Balance of Nature', 'Healthy Directions', 'Life Extension']
-    brands['home']    = ['Margaritaville Home', 'DeLonghi', 'Dyson', 'Ninja Kitchen', 'Cuisinart', 'KitchenAid', 'Vitamix', 'Cook’s Companion', 'Waterford Crystal', 'Royal Doulton', 'Lenox', 'Temp-tations', 'Bell & Howell', 'SodaStream', 'Sharper Image', 'Corkcicle', 'Mikasa', 'Tagliaferri Home Collection', 'Donatella Home', 'Blueair']
-    brands['food']    = ['Margaritaville Foods', 'Junior’s Cheesecake', 'Gourmet Holiday', 'Rochester Meat Company', 'Authentic Gourmet Croissants', 'David’s Cookies', 'Rastelli’s Fine Foods', 'Kansas City Steaks', 'Heartland Fresh', 'Mackenzie Limited', 'In-Law’s Foods', 'Farmer Jon’s Popcorn', 'Custom Bakehouse', 'Main Street Gourmet', 'Famous Amos', 'Omaha Steaks (select items)', 'Mrs. Prindable’s Caramel Apples', 'Broadway Basketeers', 'Ghirardelli', 'Harry London Chocolates']
+    brands['jewelry'] = [
+        'Invicta Reserve Jewelry™', 'Gems en Vogue®', 'Dallas Prince Designs™', 'Pamela McCoy Jewelry™',
+        'Michael Valitutti™', 'Sonia Bitton®', 'Joya™', 'Victoria Wieck®', 'Chuck Clemency™', 'Effy Jewelry®',
+        'Paul Deasy Designs™', 'Gem Treasures®', 'Tagliamonte®', 'NYC II Jewelry™', 'Passage to Israel™',
+        'Todd Waziak Designs™', 'Tanzanite Gems®', 'Matthew Favaloro™', 'Bellarosa™', 'Gem Insider®',
+        'Park Avenue Collection™', 'Golden Odyssey™', 'Portofino®', 'Korite Ammolite®', 'Samuel B.®',
+        'Vanna K®', 'Samantha DeStefano™', 'LaBell®', 'Gem Afficionado™', 'GemHaven™',
+        'Sigal Style®', 'Stefano Oro®', 'Kristen Amato™', 'One World Jewelry™', 'Hanover Jewelry™',
+        'Signare™', 'Zahra™', 'Passions by Dweck®', 'Michael Shellis™', 'Absolute Gems™'
+    ]
+    brands['watches'] = [
+        'Invicta®', 'Bulova®', 'Seiko®', 'Citizen®', 'Movado®', 'Glycine®', 'Aragon®', 'Accutron®',
+        'Swiss Legend®', 'Stuhrling Original®', 'Croton®', 'Akribos XXIV®', 'Tissot®',
+        'Raymond Weil®', 'Renato®', 'Swiss Military™', 'Edox®', 'Versace Watches®',
+        'Mondaine®', 'Android®', 'Adee Kaye™', 'Lucien Piccard®', 'Charriol®', 'Technomarine®',
+        'Swiss Diamond®', 'Luminox®', 'Longines®', 'Wenger®', 'Tag Heuer®', 'Concord®',
+        'August Steiner®', 'Bulova Precisionist™', 'Accutron II™', 'Swiss Invincible™',
+        'Momo Design®', 'Gevril®', 'XOSkeleton®', 'Graham London®', 'Bovet®', 'Perrelet®'
+    ]
+    brands['fashion'] = [
+        'One World®', 'Kate & Mallory®', 'Jill Martin™', 'WDNY®', 'Pamela McCoy Fashions™', 'Onyx Nite™',
+        'Guiliana Rancic Collection™', 'Indigo Thread Co.™', 'Donna Salyers Fabulous Furs®', 'Marc Bouwer®',
+        'Christopher & Banks®', 'Karl Lagerfeld Paris®', 'MarlaWynne®', 'Fit 4 U®', 'Couture Collection by Antthony®',
+        'Sharif®', 'Brooks Brothers®', 'Love, Carson by Carson Kressley™', 'OSO Casuals™', 'Maya Collection™',
+        'Glitterscape®', 'Kathy Ireland Fashions®', 'Christopher Fink™', 'Linea Donatella™', 'Elan®',
+        'NYDJ®', 'French Dressing Jeans®', 'Sharif Handbags®', 'Colette Green™', 'Madi Claire®',
+        'Anuschka®', 'Dooney & Bourke®', 'Coach®', 'Kate Spade®', 'Michael Kors®',
+        'Gucci®', 'Louis Vuitton®', 'Fendi®', 'Prada®', 'Versace®'
+    ]
+    brands['beauty'] = [
+        'Skinn Cosmetics®', 'Elizabeth Grant®', 'Isomers Skincare®', 'Consult Beaute™', 'Beekman 1802®',
+        'Ready to Wear®', 'Michael Todd Beauty®', 'PRAI Beauty®', 'Serious Skincare®', 'Pure Cosmetics™',
+        'Trilogy Skincare®', 'Foreo®', 'Suzanne Somers Organics™', 'Dermelect®', 'Grande Cosmetics®',
+        'Peter Thomas Roth®', 'L’Occitane®', 'BeautyBio™', 'StriVectin®', 'Manuela Marcheggiani Skincare™',
+        'Lancôme®', 'Clinique®', 'Estée Lauder®', 'IT Cosmetics™', 'Tarte™',
+        'Urban Decay®', 'Bobbi Brown®', 'Smashbox®', 'NARS®', 'Laura Geller®',
+        'Mally Beauty®', 'Josie Maran®', 'Philosophy®', 'Elemis®', 'Pür Minerals®',
+        'Algenist®', 'Korres®', 'Origins®', 'Fresh®', 'Guerlain®'
+    ]
+    brands['health'] = [
+        'Vitauthority®', 'Dr. Dubrow Health & Wellness™', 'Consult Health™', 'True2Life®', 'PurCore Nutrition™',
+        'Isomers Wellness®', 'PRAI Ageless Nutrition™', 'PureHealth Research™', 'Herbal Harvest™', 'VitaTree Nutritionals®',
+        'Probiotic America™', 'Joyce Giraud Renewal™', 'Andrew Lessman Procaps®', 'Nature’s Code®', 'Invigorate Health™',
+        'Swisa Beauty Wellness™', 'Balance of Nature®', 'Healthy Directions®', 'Life Extension®', 'Vitacost®',
+        'GNC®', 'Nature Made®', 'Centrum®', 'Alive!®', 'Garden of Life®',
+        'NOW Foods®', 'Solgar®', 'Thorne®', 'Nature’s Bounty®', 'Optimum Nutrition®',
+        'Herbalife®', 'Amway Nutrilite®', 'MegaFood®', 'New Chapter®', 'Vital Proteins®',
+        'NeoCell®', 'Sports Research®', 'BioSchwartz®', 'Pure Encapsulations®', 'Doctor’s Best®'
+    ]
+    brands['home'] = [
+        'Margaritaville Home™', 'DeLonghi®', 'Dyson®', 'Ninja®', 'Cuisinart®', 'KitchenAid®', 'Vitamix®',
+        'Cook’s Companion™', 'Waterford®', 'Royal Doulton®', 'Lenox®', 'Temp-tations®', 'Bell & Howell®',
+        'SodaStream®', 'Sharper Image®', 'Corkcicle®', 'Mikasa®', 'Blueair®', 'Donatella Home™', 'Tagliaferri Home™',
+        'Calphalon®', 'All-Clad®', 'Le Creuset®', 'Staub®', 'Nordic Ware®',
+        'Anchor Hocking®', 'Corelle®', 'Pyrex®', 'Farberware®', 'Oster®',
+        'Hamilton Beach®', 'Bissell®', 'Shark®', 'Hoover®', 'iRobot®',
+        'Dyson Pure Cool™', 'Simple Human®', 'Yankee Candle®', 'Lladro®', 'Spode®'
+    ]
+    brands['food'] = [
+        'Margaritaville Foods™', 'Junior’s Cheesecake®', 'Gourmet Holiday™', 'Rochester Meat Company™', 'Authentic Gourmet™',
+        'David’s Cookies®', 'Rastelli’s®', 'Kansas City Steaks®', 'Heartland Fresh™', 'Mackenzie Limited®',
+        'In-Law’s Foods™', 'Farmer Jon’s®', 'Custom Bakehouse™', 'Main Street Gourmet™', 'Famous Amos®',
+        'Omaha Steaks®', 'Mrs. Prindable’s®', 'Broadway Basketeers®', 'Ghirardelli®', 'Harry London®',
+        'Godiva®', 'Lindt®', 'Ferrero Rocher®', 'See’s Candies®', 'Hershey’s®',
+        'Nestlé®', 'Toblerone®', 'Brach’s®', 'Russell Stover®', 'Whitman’s®',
+        'Entenmann’s®', 'Pepperidge Farm®', 'Hostess®', 'Keurig® (coffee)', 'Starbucks® (at-home)',
+        'Caribou Coffee®', 'Gevalia®', 'Maxwell House®', 'Folgers®', 'Green Mountain Coffee®'
+    ]
     return brands
+
 
 def GetMaterials():
     materials = {}
-    materials['jewelry'] = ['24K gold', '18K gold', '14K gold', '10K gold', 'sterling silver', 'platinum', 'palladium', 'rose gold', 'white gold', 'yellow gold', 'cubic zirconia', 'diamond', 'sapphire', 'emeralds', 'rubie', 'amethyst', 'topaz', 'opal', 'garnet', 'tanzanite']
-    materials['watches'] = ['stainless steel', 'titanium', 'ceramic', 'sapphire crystal', 'mineral crystal', 'carbon fiber', 'resin', 'leather', 'rubber straps', 'silicone straps', 'nylon bands', 'gold plating', 'rose gold plating', 'ion plating', 'mother-of-pearl dials', 'diamond accents', 'luminous paint', 'bronze cases', 'polyurethane', 'canvas straps']
-    materials['fashion'] = ['cotton', 'linen', 'silk', 'wool', 'cashmere', 'polyester', 'rayon', 'nylon', 'spandex', 'modal', 'viscose', 'denim', 'chiffon', 'velvet', 'faux fur', 'faux leather', 'sequin fabric', 'lace', 'jersey knit', 'tweed']
-    materials['beauty']  = ['hyaluronic acid', 'retinol', 'vitamin C', 'collagen', 'peptides', 'shea butter', 'jojoba oil', 'argan oil', 'aloe vera', 'niacinamide', 'glycolic acid', 'salicylic acid', 'coconut oil', 'rosehip oil', 'tea tree oil', 'ceramides', 'green tea extract', 'charcoal', 'manuka honey', 'squalane']
-    materials['health']  = ['multivitamins', 'omega-3 fish oil', 'collagen peptides', 'glucosamine', 'chondroitin', 'MSM', 'turmeric', 'ginger root', 'echinacea', 'probiotics', 'prebiotics', 'vitamin D3', 'calcium citrate', 'magnesium oxide', 'coenzyme Q10', 'resveratrol', 'ashwagandha', 'melatonin', 'zinc', 'iron']
-    materials['home']    = ['stainless steel', 'tempered glass', 'hardwood', 'bamboo', 'ceramic', 'porcelain', 'nonstick coating', 'cast iron', 'enamel', 'polycarbonate', 'polypropylene', 'microfiber', 'memory foam', 'down feathers', 'stoneware', 'crystal', 'cotton', 'wool blend', 'aluminum', 'silicone']
-    materials['food']    = ['chocolate', 'vanilla', 'caramel', 'strawberries', 'blueberries', 'almonds', 'pecans', 'walnuts', 'cheddar cheese', 'cream cheese', 'butter', 'sugar', 'maple syrup', 'beef', 'chicken breast', 'pork ribs', 'salmon', 'shrimp', 'croissant dough', 'sourdough bread']
-
+    materials['jewelry'] = [
+        '24K gold', '18K gold', '14K gold', '10K gold', 'sterling silver', 'platinum', 'palladium',
+        'rose gold', 'white gold', 'yellow gold', 'cubic zirconia', 'diamond',
+        'sapphire', 'emeralds', 'rubie', 'amethyst', 'topaz', 'opal', 'garnet', 'tanzanite'
+    ]
+    materials['watches'] = [
+        'stainless steel', 'titanium', 'ceramic', 'sapphire crystal', 'mineral crystal', 'carbon fiber',
+        'resin', 'leather', 'rubber straps', 'silicone straps', 'nylon bands', 'gold plating',
+        'rose gold plating', 'ion plating', 'mother-of-pearl dials', 'diamond accents',
+        'luminous paint', 'bronze cases', 'polyurethane', 'canvas straps'
+    ]
+    materials['fashion'] = [
+        'cotton', 'linen', 'silk', 'wool', 'cashmere', 'polyester', 'rayon', 'nylon',
+        'spandex', 'modal', 'viscose', 'denim', 'chiffon', 'velvet', 'faux fur',
+        'faux leather', 'sequin fabric', 'lace', 'jersey knit', 'tweed'
+    ]
+    materials['beauty'] = [
+        'hyaluronic acid', 'retinol', 'vitamin C', 'collagen', 'peptides', 'shea butter', 'jojoba oil',
+        'argan oil', 'aloe vera', 'niacinamide', 'glycolic acid', 'salicylic acid', 'coconut oil',
+        'rosehip oil', 'tea tree oil', 'ceramides', 'green tea extract', 'charcoal', 'manuka honey', 'squalane'
+    ]
+    materials['health'] = [
+        'multivitamins', 'omega-3 fish oil', 'collagen peptides', 'glucosamine', 'chondroitin', 'MSM',
+        'turmeric', 'ginger root', 'echinacea', 'probiotics', 'prebiotics', 'vitamin D3', 'calcium citrate',
+        'magnesium oxide', 'coenzyme Q10', 'resveratrol', 'ashwagandha', 'melatonin', 'zinc', 'iron'
+    ]
+    materials['home'] = [
+        'stainless steel', 'tempered glass', 'hardwood', 'bamboo', 'ceramic', 'porcelain', 'nonstick coating',
+        'cast iron', 'enamel', 'polycarbonate', 'polypropylene', 'microfiber', 'memory foam', 'down feathers',
+        'stoneware', 'crystal', 'cotton', 'wool blend', 'aluminum', 'silicone'
+    ]
+    materials['food'] = [
+        'chocolate', 'vanilla', 'caramel', 'strawberries', 'blueberries', 'almonds', 'pecans',
+        'walnuts', 'cheddar cheese', 'cream cheese', 'butter', 'sugar', 'maple syrup', 'beef',
+        'chicken breast', 'pork ribs', 'salmon', 'shrimp', 'croissant dough', 'sourdough bread'
+    ]
     return materials
 
 def GetAspects():
     aspects = {}
-    aspects['jewelry'] = ['precious metal', 'gemstone', 'carat weight', 'cut and clarity', 'birthstone', 'plated finish', 'handcrafted', 'designer exclusive', 'statement pieces', 'collectible value', 'tennis bracelets', 'vintage inspired', 'modern minimalism', 'engraved detail', 'luxury appeal', 'affordable glamour', 'holiday gifting', 'lifetime warranty']
-    aspects['watches'] = ['automatic movement', 'quartz movement', 'Swiss made', 'water resistance', 'chronograph features', 'skeleton dials', 'limited editions', 'oversized cases', 'stainless steel bands', 'leather straps', 'interchangeable bands', '24-hour subdials', 'luminous hands', 'tourbillon styling', 'date windows', 'tachymeter bezel', 'collector exclusives', 'luxury packaging', 'sport inspired', 'everyday wear']
-    aspects['fashion'] = ['seasonal collections', 'stretch fabrics', 'exclusive prints', 'layering pieces', 'figure flattering', 'boho chic', 'office ready', 'casual weekend', 'evening wear', 'red carpet inspired', 'faux fur accents', 'vegan leather', 'easy care fabrics', 'mix and match sets', 'limited runs', 'designer collaborations', 'comfort focus', 'trend driven', 'versatile basics', 'holiday sparkle']
-    aspects['beauty']  = ['anti-aging', 'hydration focus', 'clinical formulas', 'natural ingredients', 'paraben free', 'dermatologist tested', 'celebrity endorsed', 'spa inspired', 'targeted serums', 'bold pigments', 'long wear makeup', 'all-in-one kits', 'home devices', 'luxury packaging', 'travel size options', 'exclusive bundles', 'fragrance collections', 'cruelty free', 'made in USA', 'global beauty trends']
-    aspects['health']  = ['immune support', 'joint health', 'collagen boosting', 'daily vitamins', 'antioxidants', 'digestive health', 'protein powders', 'sleep aids', 'energy boosters', 'omega-3 supplements', 'bone strength', 'metabolism support', 'mood balance', 'heart health', 'detox cleanses', 'probiotic formulas', 'celebrity doctor developed', 'capsules and powders', 'subscription refills', 'wellness kits']
-    aspects['home']    = ['kitchen appliances', 'cookware sets', 'crystal accents', 'holiday décor', 'air purifiers', 'robot vacuums', 'bedding sets', 'memory foam', 'multi-use gadgets', 'organization solutions', 'space saving design', 'energy efficiency', 'luxury finishes', 'hostess gifts', 'indoor lighting', 'outdoor living', 'pet friendly', 'easy cleanup', 'modern design', 'classic styling']
-    aspects['food']    = ['gourmet desserts', 'holiday tins', 'ready to bake', 'flash frozen', 'restaurant quality', 'small batch', 'family recipes', 'hand decorated', 'snack assortments', 'gift baskets', 'individually wrapped', 'comfort food classics', 'artisan crafted', 'regional specialties', 'imported chocolates', 'steakhouse cuts', 'breakfast favorites', 'seasonal flavors', 'easy heat and serve', 'subscription boxes']
-
+    aspects['jewelry'] = [
+        'precious metal', 'gemstone', 'carat weight', 'cut and clarity', 'birthstone', 'plated finish',
+        'handcrafted', 'designer exclusive', 'statement pieces', 'collectible value', 'tennis bracelets',
+        'vintage inspired', 'modern minimalism', 'engraved detail', 'luxury appeal',
+        'affordable glamour', 'holiday gifting', 'lifetime warranty'
+    ]
+    aspects['watches'] = [
+        'automatic movement', 'quartz movement', 'Swiss made', 'water resistance', 'chronograph features',
+        'skeleton dials', 'limited editions', 'oversized cases', 'stainless steel bands', 'leather straps',
+        'interchangeable bands', '24-hour subdials', 'luminous hands', 'tourbillon styling', 'date windows',
+        'tachymeter bezel', 'collector exclusives', 'luxury packaging', 'sport inspired', 'everyday wear'
+    ]
+    aspects['fashion'] = [
+        'seasonal collections', 'stretch fabrics', 'exclusive prints', 'layering pieces', 'figure flattering',
+        'boho chic', 'office ready', 'casual weekend', 'evening wear', 'red carpet inspired',
+        'faux fur accents', 'vegan leather', 'easy care fabrics', 'mix and match sets',
+        'limited runs', 'designer collaborations', 'comfort focus', 'trend driven', 'versatile basics', 'holiday sparkle'
+    ]
+    aspects['beauty'] = [
+        'anti-aging', 'hydration focus', 'clinical formulas', 'natural ingredients', 'paraben free',
+        'dermatologist tested', 'celebrity endorsed', 'spa inspired', 'targeted serums', 'bold pigments',
+        'long wear makeup', 'all-in-one kits', 'home devices', 'luxury packaging', 'travel size options',
+        'exclusive bundles', 'fragrance collections', 'cruelty free', 'made in USA', 'global beauty trends'
+    ]
+    aspects['health'] = [
+        'immune support', 'joint health', 'collagen boosting', 'daily vitamins', 'antioxidants', 'digestive health',
+        'protein powders', 'sleep aids', 'energy boosters', 'omega-3 supplements', 'bone strength',
+        'metabolism support', 'mood balance', 'heart health', 'detox cleanses', 'probiotic formulas',
+        'celebrity doctor developed', 'capsules and powders', 'subscription refills', 'wellness kits'
+    ]
+    aspects['home'] = [
+        'kitchen appliances', 'cookware sets', 'crystal accents', 'holiday décor', 'air purifiers',
+        'robot vacuums', 'bedding sets', 'memory foam', 'multi-use gadgets', 'organization solutions',
+        'space saving design', 'energy efficiency', 'luxury finishes', 'hostess gifts', 'indoor lighting',
+        'outdoor living', 'pet friendly', 'easy cleanup', 'modern design', 'classic styling'
+    ]
+    aspects['food'] = [
+        'gourmet desserts', 'holiday tins', 'ready to bake', 'flash frozen', 'restaurant quality', 'small batch',
+        'family recipes', 'hand decorated', 'snack assortments', 'gift baskets', 'individually wrapped',
+        'comfort food classics', 'artisan crafted', 'regional specialties', 'imported chocolates',
+        'steakhouse cuts', 'breakfast favorites', 'seasonal flavors', 'easy heat and serve', 'subscription boxes'
+    ]
     return aspects
 
 def GetTypes():
     types = {}
-    types['jewelry'] = ['ring', 'necklace', 'bracelet', 'earrings', 'pendant', 'brooch', 'anklet', 'cuff bracelet', 'charm bracelet', 'hoop earrings', 'stud earrings', 'drop earrings', 'tennis bracelet', 'cocktail ring', 'wedding band', 'engagement ring', 'locket', 'beaded necklace', 'choker', 'jewelry set']
-    types['watches'] = ['diver watch', 'chronograph watch', 'dress watch', 'sports watch', 'pilot watch', 'field watch', 'digital watch', 'automatic watch', 'quartz watch', 'skeleton watch', 'GMT watch', 'luxury watch', 'limited edition watch', 'smartwatch', 'pocket watch', 'minimalist watch', 'tactical watch', 'fashion watch', 'oversized watch', 'daily wear watch']
-    types['fashion'] = ['dress', 'blouse', 'tunic', 't-shirt', 'sweater', 'cardigan', 'jacket', 'coat', 'leggings', 'jeans', 'skirt', 'shorts', 'romper', 'jumpsuit', 'shawl', 'poncho', 'maxi dress', 'cocktail dress', 'evening gown', 'two-piece set']
-    types['beauty']  = ['lipstick', 'lip gloss', 'foundation', 'concealer', 'powder', 'eyeshadow palette', 'eyeliner', 'mascara', 'blush', 'bronzer', 'highlighter', 'primer', 'setting spray', 'serum', 'face cream', 'eye cream', 'cleanser', 'toner', 'facial mask', 'fragrance']
-    types['health']  = ['multivitamin bottle', 'collagen powder tub', 'protein shake mix', 'capsule supplement', 'gummy vitamins', 'sleep aid tablets', 'joint health formula', 'immune booster powder', 'probiotic capsules', 'omega-3 softgels', 'bone health tablets', 'energy booster shots', 'green drink mix', 'detox tea', 'digestive enzyme capsules', 'vitamin D drops', 'herbal tincture', 'powdered electrolyte mix', 'wellness kit', 'subscription refill pack']
-    types['home']    = ['stand mixer', 'blender', 'toaster oven', 'air fryer', 'coffee maker', 'slow cooker', 'cookware set', 'knife set', 'glassware set', 'bakeware set', 'vacuum cleaner', 'robot vacuum', 'air purifier', 'humidifier', 'bedding set', 'comforter', 'area rug', 'lamp', 'wall clock', 'storage container set']
-    types['food']    = ['cheesecake', 'steak', 'chicken breast pack', 'pork rib rack', 'shrimp platter', 'lobster tails', 'salmon fillet', 'croissant', 'bagel', 'sourdough loaf', 'cookie tin', 'brownie tray', 'cupcake assortment', 'candy box', 'caramel apple', 'popcorn tin', 'holiday ham', 'pasta kit', 'breakfast bundle', 'gourmet gift basket']
+    types['jewelry'] = [
+        'ring', 'necklace', 'bracelet', 'earrings', 'pendant', 'brooch', 'anklet', 'cuff bracelet',
+        'charm bracelet', 'hoop earrings', 'stud earrings', 'drop earrings', 'tennis bracelet',
+        'cocktail ring', 'wedding band', 'engagement ring', 'locket', 'beaded necklace', 'choker', 'jewelry set'
+    ]
+    types['watches'] = [
+        'diver watch', 'chronograph watch', 'dress watch', 'sports watch', 'pilot watch',
+        'field watch', 'digital watch', 'automatic watch', 'quartz watch', 'skeleton watch',
+        'GMT watch', 'luxury watch', 'limited edition watch', 'smartwatch', 'pocket watch',
+        'minimalist watch', 'tactical watch', 'fashion watch', 'oversized watch', 'daily wear watch'
+    ]
+    types['fashion'] = [
+        'dress', 'blouse', 'tunic', 't-shirt', 'sweater', 'cardigan', 'jacket', 'coat', 'leggings',
+        'jeans', 'skirt', 'shorts', 'romper', 'jumpsuit', 'shawl', 'poncho', 'maxi dress',
+        'cocktail dress', 'evening gown', 'two-piece set'
+    ]
+    types['beauty'] = [
+        'lipstick', 'lip gloss', 'foundation', 'concealer', 'powder', 'eyeshadow palette',
+        'eyeliner', 'mascara', 'blush', 'bronzer', 'highlighter', 'primer', 'setting spray',
+        'serum', 'face cream', 'eye cream', 'cleanser', 'toner', 'facial mask', 'fragrance'
+    ]
+    types['health'] = [
+        'multivitamin bottle', 'collagen powder tub', 'protein shake mix', 'capsule supplement', 'gummy vitamins',
+        'sleep aid tablets', 'joint health formula', 'immune booster powder', 'probiotic capsules', 'omega-3 softgels',
+        'bone health tablets', 'energy booster shots', 'green drink mix', 'detox tea', 'digestive enzyme capsules',
+        'vitamin D drops', 'herbal tincture', 'powdered electrolyte mix', 'wellness kit', 'subscription refill pack'
+    ]
+    types['home'] = [
+        'stand mixer', 'blender', 'toaster oven', 'air fryer', 'coffee maker', 'slow cooker', 'cookware set',
+        'knife set', 'glassware set', 'bakeware set', 'vacuum cleaner', 'robot vacuum', 'air purifier', 'humidifier',
+        'bedding set', 'comforter', 'area rug', 'lamp', 'wall clock', 'storage container set'
+    ]
+    types['food'] = [
+        'cheesecake', 'steak', 'chicken breast pack', 'pork rib rack', 'shrimp platter', 'lobster tails',
+        'salmon fillet', 'croissant', 'bagel', 'sourdough loaf', 'cookie tin', 'brownie tray', 'cupcake assortment',
+        'candy box', 'caramel apple', 'popcorn tin', 'holiday ham', 'pasta kit', 'breakfast bundle', 'gourmet gift basket'
+    ]
     return types
 
 def GetTopline(item):
@@ -128,7 +282,6 @@ def GetPrices(item):
     prices['sale']     = sales
     prices['vp']       = vp
     prices['vps']      = vps
-    
     return prices 
 
 #price handle
@@ -181,7 +334,6 @@ def GetBanner(item):
             banner = 'Add ' + number + ' - ' + item + ' - Receive ' + str(random.choice([10, 15, 15, 20])) + '% OFF'
         if banner == 'PWP$':
             banner = 'Add ' + number + ' - ' + item + ' - Save $' + str(random.choice([3, 5, 5, 10]))
-            
     return banner
 
 #coupon
@@ -205,7 +357,6 @@ def GetCoupon(item):
         coupon['line2'] = f"{item['category'].upper()} ORDERS"
         coupon['code']  = f"{item['category'].upper()}{coupon['discount']}"
         coupon['url']   = f"ShopHQ.com/{item['category']}"
-
     return coupon
 
 #price formatting
@@ -237,7 +388,6 @@ def Item():
     item['x']           = 0
     item['y']           = 0
     item['image']       = ''
-
     return item
 
 #main tower maker
@@ -262,7 +412,6 @@ def MakeItem():
     item['coupon']      = GetCoupon(item)
 
     item['x']           = x = random.randint(123, int(1920*.75))
-    print(item)
     return item
 
 MakeItem()
