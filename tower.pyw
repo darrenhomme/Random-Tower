@@ -282,7 +282,7 @@ def GetPrices(item):
     prices['sale']     = sales
     prices['vp']       = vp
     prices['vps']      = vps
-    return prices 
+    return prices
 
 #price handle
 def GetHandle(prices):
@@ -319,7 +319,7 @@ def GetColor(item):
 
 #banner
 def GetBanner(item):
-    cat = item['category']
+    category   = item['category']
     
     banner = random.choice(['30-Day Money Back Guarantee', '30-Day Money Back Guarantee', '30-Day Money Back Guarantee', '60-Day Money Back Guarantee', '90-Day Money Back Guarantee', 'BMSM%', 'BMSM$', 'PWP%', 'PWP$'])
     if banner == 'BMSM%':
@@ -329,11 +329,11 @@ def GetBanner(item):
     elif banner == 'PWP%' or banner == 'PWP$':
         number = GetItemNumber()
         types = GetTypes()
-        item   = random.choice(types[cat]).title()
+        item   = random.choice(types[category]).title()
         if banner == 'PWP%':
-            banner = 'Add ' + number + ' - ' + item + ' - Receive ' + str(random.choice([10, 15, 15, 20])) + '% OFF'
+            banner = 'Add ' + item + ' - ' + number + ' - Receive ' + str(random.choice([10, 15, 15, 20])) + '% OFF'
         if banner == 'PWP$':
-            banner = 'Add ' + number + ' - ' + item + ' - Save $' + str(random.choice([3, 5, 5, 10]))
+            banner = 'Add ' + item + ' - ' + number + ' - Save $' + str(random.choice([3, 5, 5, 10]))
     return banner
 
 #coupon
@@ -364,9 +364,9 @@ def PriceRange(price):
     if len(price) == 1:
         return f"${price[0]:,.2f}"
     elif len(price) == 2:
-        return f"${price[0]:,.2f}" + '/' + f"${price[-1]:,.2f}"
+        return f"${price[0]:,.2f}" + ' / ' + f"${price[-1]:,.2f}"
     elif len(price) > 2:
-        return f"${price[0]:,.2f}" + '-' + f"${price[-1]:,.2f}"
+        return f"${price[0]:,.2f}" + ' - ' + f"${price[-1]:,.2f}"
     else:
         return '$'
 
