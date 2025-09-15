@@ -2,7 +2,7 @@
 
 import random
 import time, datetime
-from PIL import ImageColor
+from PIL import Image, ImageDraw, ImageColor
 
 #make it kind of random
 rng = random.SystemRandom()
@@ -369,6 +369,42 @@ def PriceRange(price):
         return f"${price[0]:,.2f}" + ' - ' + f"${price[-1]:,.2f}"
     else:
         return '$'
+
+#file path used if script is comppiled with pyinstaller and fonts/images added to the exe
+def GetPath(filename, sub):
+    if getattr(sys, 'frozen', False):
+        #exe
+        base = sys._MEIPASS
+        return os.path.join(base, filename)
+    else:
+        #normal script
+        base = os.path.dirname(__file__)
+        return os.path.join(base, sub, filename)
+
+#image corners for rectangles
+def MakeCorner(radius, fill):
+    corner = Image.new('RGBA', (radius, radius), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(corner)
+    draw.pieslice((0, 0, radius * 2, radius * 2), 180, 270, fill=fill)
+    return corner
+
+#image tower background rectangles
+def MakeRectangle(size, radius, fill):
+    width, height = size
+    rectangle = Image.new('RGBA', size, fill)
+    
+    corner = MakeCorner(radius[0], fill)
+    rectangle.paste(corner, (0, 0))
+    
+    corner = MakeCorner(radius[1], fill)
+    rectangle.paste(corner.rotate(90), (0, height - radius[1]))
+
+    corner = MakeCorner(radius[2], fill)
+    rectangle.paste(corner.rotate(180), (width - radius[2], height - radius[2]))
+
+    corner = MakeCorner(radius[3], fill)
+    rectangle.paste(corner.rotate(270), (width - radius[3], 0))
+    return rectangle
 
 def Item():
     item = {}
