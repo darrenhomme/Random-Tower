@@ -2,7 +2,10 @@
 
 import random
 import time, datetime
-from PIL import Image, ImageDraw, ImageColor
+import sys
+import os
+from PIL import Image, ImageDraw, ImageFont, ImageColor
+import textwrap
 
 #make it kind of random
 rng = random.SystemRandom()
@@ -370,6 +373,60 @@ def PriceRange(price):
     else:
         return '$'
 
+#max width for multi line text
+def WordWrap(text, width):
+    output = ''
+    for line in textwrap.wrap(text, width=width):
+        if output != '':
+            output += '\n' + line
+        else:
+            output = line
+    return output
+
+def Item():
+    item = {}
+    item['itemNumber']  = ''
+    item['categories']  = ''
+    item['category']    = ''
+    item['description'] = ''
+    item['markdown']    = ''
+    item['listPrice']   = ''
+    item['color']       = (0, 0, 0)
+    item['handle']      = ''
+    item['salePrice']   = ''
+    item['payments']    = 0
+    item['vpPrice']     = ''
+    item['banner']      = ''
+    item['coupon']      = ''
+    item['x']           = 0
+    item['y']           = 123
+    item['image']       = ''
+    return item
+
+#main function to get item information
+def MakeItem():
+    item = Item()
+    
+    item['categories']  = GetCategories()
+    item['category']    = random.choice(list(item['categories'].keys()))
+    prices              = GetPrices(item)
+
+    item['itemNumber']  = GetItemNumber()
+    item['description'] = GetTopline(item)
+
+    item['markdown']    = prices['markdown']
+    item['listPrice']   = prices['list']
+    item['handle']      = GetHandle(prices)
+    item['color']       = GetColor(item)
+    item['salePrice']   = prices['sale']
+    item['payments']    = prices['vp']
+    item['vpPrice']     = prices['vps']
+    item['banner']      = GetBanner(item)
+    item['coupon']      = GetCoupon(item)
+
+    item['x']           = x = random.randint(123, int(1920*.75)) 
+    return item
+
 #file path used if script is comppiled with pyinstaller and fonts/images added to the exe
 def GetPath(filename, sub):
     if getattr(sys, 'frozen', False):
@@ -380,6 +437,39 @@ def GetPath(filename, sub):
         #normal script
         base = os.path.dirname(__file__)
         return os.path.join(base, sub, filename)
+
+#image text
+def TextSize(text, font):
+    draw  = ImageDraw.Draw( Image.new("RGBA", (0, 0), (0,0,0,0)) )
+    lines = text.split('\n')
+
+    w = 0
+    h = int(font.size * len(lines) * 1.20)
+
+    for line in lines:
+        lw  = int(draw.textlength(line, font=font))
+        if lw > w:
+            w = lw
+    return w, h
+
+#resize text to fit in a screen area
+def MaxSize(text, font, color, width, height):
+    draw  = ImageDraw.Draw( Image.new("RGBA", (0, 0), (0,0,0,0)) )
+    
+    w1, h1 = TextSize(text, font)
+
+    image = Image.new("RGBA", (w1, h1), (0,0,0,0))
+    draw  = ImageDraw.Draw(image)
+
+    draw.text((0, 0), text, color, font=font)
+
+    if w1 > width and h1 > height:
+        image = image.resize((width, height))
+    elif w1 > width:
+        image = image.resize((width, h1))
+    elif h1 > height:
+        image = image.resize((w1,    height))
+    return image
 
 #image corners for rectangles
 def MakeCorner(radius, fill):
@@ -406,48 +496,46 @@ def MakeRectangle(size, radius, fill):
     rectangle.paste(corner.rotate(270), (width - radius[3], 0))
     return rectangle
 
-def Item():
-    item = {}
-    item['itemNumber']  = ''
-    item['categories']  = ''
-    item['category']    = ''
-    item['description'] = ''
-    item['markdown']    = ''
-    item['listPrice']   = ''
-    item['color']       = (0, 0, 0)
-    item['handle']      = ''
-    item['salePrice']   = ''
-    item['payments']    = 0
-    item['vpPrice']     = ''
-    item['banner']      = ''
-    item['coupon']      = ''
-    item['x']           = 0
-    item['y']           = 0
-    item['image']       = ''
+#image for tower topline/description
+def MakeTopline(item):
+    local = Image.new("RGBA", (340, 230), (0,0,0,0))
+    draw = ImageDraw.Draw(local)
+
+    item['y'] = 123
+
+    #BG
+    img = MakeRectangle((340, 230), radius=[15, 15, 15, 15], fill=(232, 231, 234))
+    local.paste(img, (0, 0), img)
+
+    #HR
+    img = MakeRectangle((340, 1), radius=[0, 0, 0, 0], fill=(0, 0, 0))
+    local.paste(img, (0, 42), img)
+
+    #Item Number
+    font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 43)
+    w1, h1 = TextSize(item['itemNumber'], font)
+    draw.text((10, -3), item['itemNumber'], (0, 0, 0), font=font)
+
+    #Description
+    font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 33)
+
+    description = WordWrap(item['description'], width=18)
+    text = MaxSize(description, font, (0, 0, 0), 320, 230-h1)
+    local.paste(text, (10, h1), text)
+
+    item['image'].paste(local, (item['x'], item['y']), local)
+
+    item['y'] += 230
     return item
 
-#main tower maker
-def MakeItem():
-    item = Item()
-    
-    item['categories']  = GetCategories()
-    item['category']    = random.choice(list(item['categories'].keys()))
-    prices              = GetPrices(item)
+def MakeTower(item):
+    item['image'] = Image.new("RGBA", (1920, 1080), (0,0,0,0))
 
-    item['itemNumber']  = GetItemNumber()
-    item['description'] = GetTopline(item)
-
-    item['markdown']    = prices['markdown']
-    item['listPrice']   = prices['list']
-    item['handle']      = GetHandle(prices)
-    item['color']       = GetColor(item)
-    item['salePrice']   = prices['sale']
-    item['payments']    = prices['vp']
-    item['vpPrice']     = prices['vps']
-    item['banner']      = GetBanner(item)
-    item['coupon']      = GetCoupon(item)
-
-    item['x']           = x = random.randint(123, int(1920*.75))
+    item = MakeTopline(item)
     return item
 
-MakeItem()
+def main():
+    item = MakeItem()
+    item = MakeTower(item)
+
+main()
