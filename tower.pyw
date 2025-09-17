@@ -528,10 +528,72 @@ def MakeTopline(item):
     item['y'] += 230
     return item
 
+def MakeList(item):
+    local = Image.new("RGBA", (340, 38), (0,0,0,0))
+    draw = ImageDraw.Draw(local)
+
+    item['y'] += 8
+    
+    if item['markdown']:
+        #BG
+        img = MakeRectangle((340, 38), radius=[15, 0, 0, 15], fill=(232, 231, 234))
+        local.paste(img, (0, 0), img)
+
+        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 25)
+        w1, h1 = TextSize('ShopHQ Price' + '  ', font)
+        w2, h2 = TextSize(PriceRange(item['listPrice']),     font)
+
+        #FG
+        text = Image.new("RGBA", (w1+w2+5, h1), (0,0,0,0))
+        dt   = ImageDraw.Draw(text)
+        dt.text((0, 0),  'ShopHQ Price' + '  ', (0, 0, 0), font=font)
+        dt.text((w1, 0), PriceRange(item['listPrice']),     (0, 0, 0), font=font)
+        dt.rectangle((w1-5, (h2/2), w1+w2+5, (h2/2)+1), fill=(224, 64, 53))
+
+        if w1+w2+5 > 320:
+            text = text.resize((int(320), int(h1)))
+        
+        local.paste(text, (10, 5), text)
+
+        item['image'].paste(local, (item['x'], item['y']), local)
+
+        item['y'] += 38
+    return item
+
+def MakeSale(item):
+    local = Image.new("RGBA", (340, 90), (0,0,0,0))
+    draw = ImageDraw.Draw(local)
+
+    #BG
+    if item['markdown']:
+        img = MakeRectangle((340, 90), radius=[0, 0, 0, 0],   fill=item['color'])
+    else:
+        img = MakeRectangle((340, 90), radius=[15, 0, 0, 15], fill=item['color'])
+    local.paste(img, (0, 0), img)
+
+    #FG
+    font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 33)
+    w1, h1 = TextSize(item['handle'], font)
+    text = MaxSize(item['handle'], font, (255, 255, 255), 320, h1)
+    local.paste(text, (10, 0), text)
+
+    font = ImageFont.truetype(GetPath('MuseoSans-900.otf', '_fonts'), 50)
+    w2, h2 = TextSize(item['handle'], font)
+    text = MaxSize(PriceRange(item['salePrice']), font, (255, 255, 255), 320, h2)
+    local.paste(text, (10, h1-5), text)
+
+    item['image'].paste(local, (item['x'], item['y']), local)
+
+    item['y'] += 90
+    return item
+
 def MakeTower(item):
     item['image'] = Image.new("RGBA", (1920, 1080), (0,0,0,0))
 
     item = MakeTopline(item)
+    item = MakeList(item)
+    item = MakeSale(item)
+    item['image'].show()
     return item
 
 def main():
