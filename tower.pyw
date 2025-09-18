@@ -587,12 +587,65 @@ def MakeSale(item):
     item['y'] += 90
     return item
 
+def MakePayments(item):
+    local = Image.new("RGBA", (340, 45), (0,0,0,0))
+    draw = ImageDraw.Draw(local)
+    
+    if item['payments'] > 1:
+        #BG
+        img = MakeRectangle((340, 45), radius=[0, 0, 0, 0], fill=(232, 231, 234))
+        local.paste(img, (0, 0), img)
+
+        img = MakeRectangle((340, 1), radius=[0, 0, 0, 0],  fill=(100, 100, 100))
+        local.paste(img, (0, 44), img)
+
+        #FG
+        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 33)
+
+        pay = str(item['payments']) + " ValuePay® " + PriceRange(item['vpPrice'])
+
+        w1, h1 = TextSize(pay, font)
+        text = MaxSize(pay, font, (0, 0, 0), 320, h1)
+        local.paste(text, (10, 0), text)
+
+        item['image'].paste(local, (item['x'], item['y']), local)
+
+        item['y'] += 45
+    return item
+
+def MakeShipping(item):
+    local = Image.new("RGBA", (340, 33), (0,0,0,0))
+    draw = ImageDraw.Draw(local)
+
+    #BG
+    img = MakeRectangle((340, 33), radius=[0, 15, 15, 0], fill=(232, 231, 234))
+    local.paste(img, (0, 0), img)
+
+    #FG
+    if item['salePrice'][0] >= 75.0 and item['salePrice'][-1] >= 75.0:
+        font = ImageFont.truetype(GetPath('MuseoSans-900.otf', '_fonts'), 27)
+        draw.text((10, 0), 'FREE SHIPPING', (224, 64, 53), font=font)
+    else:
+        font = ImageFont.truetype(GetPath('MuseoSans-900.otf', '_fonts'), 27)
+        draw.text((10, 0), 'FREE S&H  ', (224, 64, 53), font=font)
+        w1, h1 = TextSize('FREE S&H  ', font)
+        
+        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 27)
+        draw.text((10+w1, 0), "ORDERS $75+", (0, 0, 0), font=font)
+
+    item['image'].paste(local, (item['x'], item['y']), local)
+
+    item['y'] += 33
+    return item
+
 def MakeTower(item):
     item['image'] = Image.new("RGBA", (1920, 1080), (0,0,0,0))
 
     item = MakeTopline(item)
     item = MakeList(item)
     item = MakeSale(item)
+    item = MakePayments(item)
+    item = MakeShipping(item)
     item['image'].show()
     return item
 
