@@ -6,6 +6,7 @@ import sys
 import os
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import textwrap
+import qrcode
 
 #make it kind of random
 rng = random.SystemRandom()
@@ -355,11 +356,11 @@ def GetCoupon(item):
     if coupon['kind'] == 'ALL':
         coupon['line2'] = 'ALL ORDERS'
         coupon['code']  = f"SHOPHQ{coupon['discount']}"
-        coupon['url']   = f"ShopHQ.com/{coupon['code']}"
+        coupon['url']   = f"ShopHQ.com/v/{coupon['code']}"
     elif coupon['kind'] != None:
         coupon['line2'] = f"{item['category'].upper()} ORDERS"
         coupon['code']  = f"{item['category'].upper()}{coupon['discount']}"
-        coupon['url']   = f"ShopHQ.com/{item['category']}"
+        coupon['url']   = f"ShopHQ.com/c/{item['category']}"
     return coupon
 
 #price formatting
@@ -695,6 +696,59 @@ def MakeContact(item):
     item['image'].paste(local, (item['x'], 904), local)
     return item
 
+def MakeCoupon(item):
+    coupon = item['coupon']
+    
+    local = Image.new("RGBA", (400, 110), (0,0,0,0))
+    draw = ImageDraw.Draw(local)
+
+    #BG
+    img = MakeRectangle((400, 110), radius=[15, 15, 15, 15], fill=(232, 231, 234))
+    local.paste(img, (0, 0), img)
+
+    #FG
+    if coupon['kind'] != None:
+        #qr
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=0,
+        )
+        qr.add_data(coupon['url'])
+        qr.make(fit=True)
+        qr = qr.make_image(fill_color=(0, 0, 0), back_color=(255, 255, 255, 0)).convert('RGBA')
+        qr = qr.resize((97, 97))
+        local.paste(qr, (7, 7), qr)
+
+        #lines 1 & 2
+        font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 30)
+        w1, h1 = TextSize(coupon['line1'], font)
+        text = MaxSize(coupon['line1'], font, (0, 0, 0), 400-115, h1)
+        local.paste(text, (115, 0), text)
+        w1, h1 = TextSize(coupon['line2'], font)
+        text = MaxSize(coupon['line2'], font, (0, 0, 0), 400-115, h1)
+        local.paste(text, (115, 25), text)
+
+        #code
+        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 30)
+        w1, h1 = TextSize(f"CODE: {coupon['code']}", font)
+        text = MaxSize(f"CODE: {coupon['code']}", font, (224, 64, 53), 400-115, h1)
+        local.paste(text, (115, 50), text)
+
+        #time
+        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 20)
+        w1, h1 = TextSize(coupon['time'], font)
+        text = MaxSize(coupon['time'], font, (0, 0, 0), 400-115, h1)
+        local.paste(text, (115, 80), text)
+
+        x = 1920-123-400
+        if item['x'] > 1920/2:
+            x = 123
+        y = random.choice([50, 904])
+        item['image'].paste(local, (x, y), local)
+        return item
+
 def MakeTower(item):
     item['image'] = Image.new("RGBA", (1920, 1080), (0,0,0,0))
 
@@ -705,6 +759,7 @@ def MakeTower(item):
     item = MakeShipping(item)
     item = MakeBanner(item)
     item = MakeContact(item)
+    item = MakeCoupon(item)
     item['image'].show()
     return item
 
