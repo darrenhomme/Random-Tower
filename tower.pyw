@@ -638,6 +638,63 @@ def MakeShipping(item):
     item['y'] += 33
     return item
 
+def MakeBanner(item):
+    local = Image.new("RGBA", (340, 75), (0,0,0,0))
+    draw = ImageDraw.Draw(local)
+
+    item['y'] += 8
+
+    #BG
+    img = MakeRectangle((340, 75), radius=[15, 15, 15, 15], fill=item['color'])
+    local.paste(img, (0, 0), img)
+
+    #FG
+    font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 30)
+
+    if 'Guarantee' in item['banner']:
+        w = 25
+    elif 'Buy One' in item['banner']:
+        w = 15
+    else:
+        w = 30
+    banner = WordWrap(item['banner'], width=w)
+
+    text = MaxSize(banner, font, (255, 255, 255), 320, 75)
+    local.paste(text, (10, 0), text)
+
+    item['image'].paste(local, (item['x'], item['y']), local)
+    return item
+
+def MakeContact(item):
+    local = Image.new("RGBA", (340, 110), (0,0,0,0))
+    draw = ImageDraw.Draw(local)
+
+    #BG
+    #Blue
+    img = MakeRectangle((120, 110), radius=[15, 15, 0, 0], fill=(14, 118, 188))
+    local.paste(img, (0, 0), img)
+    #White
+    img = MakeRectangle((220, 110), radius=[0, 0, 15, 15], fill=(232, 231, 234))
+    local.paste(img, (120, 0), img)
+
+    #Bug
+    ratio = 0.81625
+    width = 115
+    img = Image.open(GetPath('ShopHQ.tif', '_images'), 'r')
+    img = img.resize((int(width),int(width*ratio)))
+    local.paste(img, (2, 8), img)
+
+    #Website
+    font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 33)
+    draw.text((120+5, 10), "ShopHQ.com", (0, 0, 0), font=font)
+
+    #Phone
+    font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 29)
+    draw.text((120+5, 60), "(800) 474-6762", (0, 0, 0), font=font)
+
+    item['image'].paste(local, (item['x'], 904), local)
+    return item
+
 def MakeTower(item):
     item['image'] = Image.new("RGBA", (1920, 1080), (0,0,0,0))
 
@@ -646,6 +703,8 @@ def MakeTower(item):
     item = MakeSale(item)
     item = MakePayments(item)
     item = MakeShipping(item)
+    item = MakeBanner(item)
+    item = MakeContact(item)
     item['image'].show()
     return item
 
