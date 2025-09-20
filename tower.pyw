@@ -4,9 +4,11 @@ import random
 import time, datetime
 import sys
 import os
-from PIL import Image, ImageDraw, ImageFont, ImageColor
+from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageTk
 import textwrap
 import qrcode
+import tkinter as tk
+import keyboard
 
 #make it kind of random
 rng = random.SystemRandom()
@@ -747,7 +749,7 @@ def MakeCoupon(item):
             x = 123
         y = random.choice([50, 904])
         item['image'].paste(local, (x, y), local)
-        return item
+    return item
 
 def MakeTower(item):
     item['image'] = Image.new("RGBA", (1920, 1080), (0,0,0,0))
@@ -760,11 +762,47 @@ def MakeTower(item):
     item = MakeBanner(item)
     item = MakeContact(item)
     item = MakeCoupon(item)
-    item['image'].show()
     return item
 
-def main():
+def ExitOnKey():
+    if keyboard.is_pressed('esc'):
+        root.destroy()
+        sys.exit(0)
+
+def Disolve(images, imageLabel):
+    alpha = 0
+    while 1.0 > alpha:
+        blended = ImageTk.PhotoImage(Image.blend(images[0], images[1], alpha))
+        alpha   = alpha + 0.05
+        time.sleep(0.05)
+        imageLabel.config(image=blended)
+        imageLabel.update()
+        ExitOnKey()
+        
+    blended = ImageTk.PhotoImage(images[1])
+    imageLabel.config(image=blended)
+    imageLabel.update()
+    return blended
+
+root = tk.Tk()
+root.title("Full Screen Tkinter Window")
+root.attributes('-fullscreen', True)
+root.config(cursor="none")
+
+images    = list(range(2))
+images[0] = Image.new("RGBA", (root.winfo_screenwidth(), root.winfo_screenheight()), (0,0,0,0))
+blended   = ImageTk.PhotoImage(images[0])
+
+imageLabel = tk.Label(root, image=blended, bg='#3b3b3b')
+imageLabel.pack()
+
+while(True):
     item = MakeItem()
     item = MakeTower(item)
-
-main()
+    images[1] = item['image'].resize((root.winfo_screenwidth(), root.winfo_screenheight()), Image.LANCZOS)
+    
+    blended   = Disolve(images, imageLabel)
+    images[0] = images[1]
+    for x in range(1000):
+        time.sleep(.01)
+        ExitOnKey()
