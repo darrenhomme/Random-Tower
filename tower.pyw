@@ -784,6 +784,30 @@ def Disolve(images, imageLabel):
     imageLabel.update()
     return blended
 
+def FormatImage(screen, image):
+    screenwidth  = screen.winfo_screenwidth()
+    screenheight = screen.winfo_screenheight()
+
+    imagewidth, imageheight = image.size
+
+    if (imagewidth/imageheight) == (screenwidth/screenheight):
+        width  = screenwidth
+        height = screenheight
+    elif (imagewidth/imageheight) > (screenwidth/screenheight):
+        width  = screenwidth
+        height = int( screenwidth  * (imageheight/imagewidth) )
+    else:
+        width  = int( screenheight / (imageheight/imagewidth) )
+        height = screenheight
+    
+    x = int((screenwidth  - width)/2)
+    y = int((screenheight - height)/2)
+
+    local = Image.new("RGBA", (screenwidth, screenheight), (0,0,0,0))
+    image = image.resize((width, height), Image.LANCZOS)
+    local.paste(image, (x, y), image)
+    return local
+
 root = tk.Tk()
 root.title("Full Screen Tkinter Window")
 root.attributes('-fullscreen', True)
@@ -799,7 +823,8 @@ imageLabel.pack()
 while(True):
     item = MakeItem()
     item = MakeTower(item)
-    images[1] = item['image'].resize((root.winfo_screenwidth(), root.winfo_screenheight()), Image.LANCZOS)
+    
+    images[1] = FormatImage(root, item['image'])
     
     blended   = Disolve(images, imageLabel)
     images[0] = images[1]
