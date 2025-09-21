@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageTk
 import textwrap
 import qrcode
 import tkinter as tk
+from screeninfo import get_monitors
 import keyboard
 
 #make it kind of random
@@ -769,24 +770,24 @@ def ExitOnKey():
         root.destroy()
         sys.exit(0)
 
-def Disolve(images, imageLabel):
+def Disolve(images, label):
     alpha = 0
     while 1.0 > alpha:
         blended = ImageTk.PhotoImage(Image.blend(images[0], images[1], alpha))
         alpha   = alpha + 0.05
         time.sleep(0.05)
-        imageLabel.config(image=blended)
-        imageLabel.update()
+        label.config(image=blended)
+        label.update()
         ExitOnKey()
         
     blended = ImageTk.PhotoImage(images[1])
-    imageLabel.config(image=blended)
-    imageLabel.update()
+    label.config(image=blended)
+    label.update()
     return blended
 
 def FormatImage(screen, image):
-    screenwidth  = screen.winfo_screenwidth()
-    screenheight = screen.winfo_screenheight()
+    screenwidth  = screen['width']
+    screenheight = screen['height']
 
     imagewidth, imageheight = image.size
 
@@ -808,26 +809,48 @@ def FormatImage(screen, image):
     local.paste(image, (x, y), image)
     return local
 
-root = tk.Tk()
-root.title("Full Screen Tkinter Window")
-root.attributes('-fullscreen', True)
-root.config(cursor="none")
+def GetWindows():
+    windows      = []
+    windowImages = []
+    imageLabels  = []
+    
+    for monitor in get_monitors():
+        win = tk.Toplevel(root)
+        win.config(cursor="none")
+        win.overrideredirect(True)
+        win.geometry(f"{monitor.width}x{monitor.height}+{monitor.x}+{monitor.y}")
+        windowImages.append( ImageTk.PhotoImage(Image.new("RGBA", (monitor.width, monitor.height), (0,0,0,0))) )
+        imageLabels.append( tk.Label(win, image=windowImages[-1], bg='#3b3b3b') )
+        imageLabels[-1].pack()
+        windows.append({'window': win, 'image': windowImages[-1], 'label': imageLabels[-1], 'width': monitor.width, 'height': monitor.height, 'x': monitor.x, 'y': monitor.y})
+    return windows
 
 images    = list(range(2))
-images[0] = Image.new("RGBA", (root.winfo_screenwidth(), root.winfo_screenheight()), (0,0,0,0))
-blended   = ImageTk.PhotoImage(images[0])
+images[0] = Image.new("RGBA", (1920, 1080), (0,0,0,0))
 
-imageLabel = tk.Label(root, image=blended, bg='#3b3b3b')
-imageLabel.pack()
+root = tk.Tk()
+root.config(cursor="none")
+root.withdraw()
 
-while(True):
+windows = GetWindows()
+
+def Update():
     item = MakeItem()
     item = MakeTower(item)
-    
-    images[1] = FormatImage(root, item['image'])
-    
-    blended   = Disolve(images, imageLabel)
+    images[1] = item['image']
+
+    for win in windows:
+        tmp = images.copy()
+        tmp[0] = FormatImage(win, tmp[0])
+        tmp[1] = FormatImage(win, tmp[1])
+        win['image'] = Disolve(tmp, win['label'])
+        
     images[0] = images[1]
     for x in range(1000):
         time.sleep(.01)
         ExitOnKey()
+
+    root.after(0, Update)
+
+root.after(0, Update)
+root.mainloop()
