@@ -403,7 +403,7 @@ def Item():
     item['banner']      = ''
     item['coupon']      = ''
     item['x']           = 0
-    item['y']           = 123
+    item['y']           = 246
     item['image']       = ''
     return item
 
@@ -428,7 +428,7 @@ def MakeItem():
     item['banner']      = GetBanner(item)
     item['coupon']      = GetCoupon(item)
 
-    item['x']           = x = random.randint(123, int(1920*.75)) 
+    item['x']           = x = random.randint(246, int(3840*.75)) 
     return item
 
 #file path used if script is comppiled with pyinstaller and fonts/images added to the exe
@@ -502,158 +502,158 @@ def MakeRectangle(size, radius, fill):
 
 #image for tower topline/description
 def MakeTopline(item):
-    local = Image.new("RGBA", (340, 230), (0,0,0,0))
+    local = Image.new("RGBA", (680, 460), (0,0,0,0))
     draw = ImageDraw.Draw(local)
 
-    item['y'] = 123
+    item['y'] = 246
 
     #BG
-    img = MakeRectangle((340, 230), radius=[15, 15, 15, 15], fill=(232, 231, 234))
+    img = MakeRectangle((680, 460), radius=[15, 15, 15, 15], fill=(232, 231, 234))
     local.paste(img, (0, 0), img)
 
     #HR
-    img = MakeRectangle((340, 1), radius=[0, 0, 0, 0], fill=(0, 0, 0))
-    local.paste(img, (0, 42), img)
+    img = MakeRectangle((680, 2), radius=[0, 0, 0, 0], fill=(0, 0, 0))
+    local.paste(img, (0, 84), img)
 
     #Item Number
-    font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 43)
+    font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 86)
     w1, h1 = TextSize(item['itemNumber'], font)
-    draw.text((10, -3), item['itemNumber'], (0, 0, 0), font=font)
+    draw.text((20, -6), item['itemNumber'], (0, 0, 0), font=font)
 
     #Description
-    font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 33)
+    font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 66)
 
     description = WordWrap(item['description'], width=18)
-    text = MaxSize(description, font, (0, 0, 0), 320, 230-h1)
-    local.paste(text, (10, h1), text)
+    text = MaxSize(description, font, (0, 0, 0), 640, 460-h1)
+    local.paste(text, (20, h1), text)
 
     item['image'].paste(local, (item['x'], item['y']), local)
 
-    item['y'] += 230
+    item['y'] += 460
     return item
 
 def MakeList(item):
-    local = Image.new("RGBA", (340, 38), (0,0,0,0))
+    local = Image.new("RGBA", (680, 76), (0,0,0,0))
     draw = ImageDraw.Draw(local)
 
-    item['y'] += 8
+    item['y'] += 16
     
     if item['markdown']:
         #BG
-        img = MakeRectangle((340, 38), radius=[15, 0, 0, 15], fill=(232, 231, 234))
+        img = MakeRectangle((680, 76), radius=[15, 0, 0, 15], fill=(232, 231, 234))
         local.paste(img, (0, 0), img)
 
-        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 25)
+        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 50)
         w1, h1 = TextSize('ShopHQ Price' + '  ', font)
         w2, h2 = TextSize(PriceRange(item['listPrice']),     font)
 
         #FG
-        text = Image.new("RGBA", (w1+w2+5, h1), (0,0,0,0))
+        text = Image.new("RGBA", (w1+w2+10, h1), (0,0,0,0))
         dt   = ImageDraw.Draw(text)
         dt.text((0, 0),  'ShopHQ Price' + '  ', (0, 0, 0), font=font)
         dt.text((w1, 0), PriceRange(item['listPrice']),     (0, 0, 0), font=font)
-        dt.rectangle((w1-5, (h2/2), w1+w2+5, (h2/2)+1), fill=(224, 64, 53))
+        dt.rectangle((w1-10, (h2/2), w1+w2+10, (h2/2)+2), fill=(224, 64, 53))
 
-        if w1+w2+5 > 320:
-            text = text.resize((int(320), int(h1)))
+        if w1+w2+5 > 640:
+            text = text.resize((int(640), int(h1)))
         
-        local.paste(text, (10, 5), text)
+        local.paste(text, (20, 10), text)
 
         item['image'].paste(local, (item['x'], item['y']), local)
 
-        item['y'] += 38
+        item['y'] += 76
     return item
 
 def MakeSale(item):
-    local = Image.new("RGBA", (340, 90), (0,0,0,0))
+    local = Image.new("RGBA", (680, 180), (0,0,0,0))
     draw = ImageDraw.Draw(local)
 
     #BG
     if item['markdown']:
-        img = MakeRectangle((340, 90), radius=[0, 0, 0, 0],   fill=item['color'])
+        img = MakeRectangle((680, 180), radius=[0, 0, 0, 0],   fill=item['color'])
     else:
-        img = MakeRectangle((340, 90), radius=[15, 0, 0, 15], fill=item['color'])
+        img = MakeRectangle((680, 180), radius=[15, 0, 0, 15], fill=item['color'])
     local.paste(img, (0, 0), img)
 
     #FG
-    font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 33)
+    font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 66)
     w1, h1 = TextSize(item['handle'], font)
-    text = MaxSize(item['handle'], font, (255, 255, 255), 320, h1)
-    local.paste(text, (10, 0), text)
+    text = MaxSize(item['handle'], font, (255, 255, 255), 640, h1)
+    local.paste(text, (20, 0), text)
 
-    font = ImageFont.truetype(GetPath('MuseoSans-900.otf', '_fonts'), 50)
+    font = ImageFont.truetype(GetPath('MuseoSans-900.otf', '_fonts'), 100)
     w2, h2 = TextSize(item['handle'], font)
-    text = MaxSize(PriceRange(item['salePrice']), font, (255, 255, 255), 320, h2)
-    local.paste(text, (10, h1-5), text)
+    text = MaxSize(PriceRange(item['salePrice']), font, (255, 255, 255), 640, h2)
+    local.paste(text, (20, h1-10), text)
 
     item['image'].paste(local, (item['x'], item['y']), local)
 
-    item['y'] += 90
+    item['y'] += 180
     return item
 
 def MakePayments(item):
-    local = Image.new("RGBA", (340, 45), (0,0,0,0))
+    local = Image.new("RGBA", (680, 90), (0,0,0,0))
     draw = ImageDraw.Draw(local)
     
     if item['payments'] > 1:
         #BG
-        img = MakeRectangle((340, 45), radius=[0, 0, 0, 0], fill=(232, 231, 234))
+        img = MakeRectangle((680, 90), radius=[0, 0, 0, 0], fill=(232, 231, 234))
         local.paste(img, (0, 0), img)
 
-        img = MakeRectangle((340, 1), radius=[0, 0, 0, 0],  fill=(100, 100, 100))
-        local.paste(img, (0, 44), img)
+        img = MakeRectangle((680, 2), radius=[0, 0, 0, 0],  fill=(100, 100, 100))
+        local.paste(img, (0, 88), img)
 
         #FG
-        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 33)
+        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 66)
 
         pay = str(item['payments']) + " ValuePay® " + PriceRange(item['vpPrice'])
 
         w1, h1 = TextSize(pay, font)
-        text = MaxSize(pay, font, (0, 0, 0), 320, h1)
-        local.paste(text, (10, 0), text)
+        text = MaxSize(pay, font, (0, 0, 0), 640, h1)
+        local.paste(text, (20, 0), text)
 
         item['image'].paste(local, (item['x'], item['y']), local)
 
-        item['y'] += 45
+        item['y'] += 90
     return item
 
 def MakeShipping(item):
-    local = Image.new("RGBA", (340, 33), (0,0,0,0))
+    local = Image.new("RGBA", (680, 66), (0,0,0,0))
     draw = ImageDraw.Draw(local)
 
     #BG
-    img = MakeRectangle((340, 33), radius=[0, 15, 15, 0], fill=(232, 231, 234))
+    img = MakeRectangle((680, 66), radius=[0, 15, 15, 0], fill=(232, 231, 234))
     local.paste(img, (0, 0), img)
 
     #FG
     if item['salePrice'][0] >= 75.0 and item['salePrice'][-1] >= 75.0:
-        font = ImageFont.truetype(GetPath('MuseoSans-900.otf', '_fonts'), 27)
-        draw.text((10, 0), 'FREE SHIPPING', (224, 64, 53), font=font)
+        font = ImageFont.truetype(GetPath('MuseoSans-900.otf', '_fonts'), 54)
+        draw.text((20, 0), 'FREE SHIPPING', (224, 64, 53), font=font)
     else:
-        font = ImageFont.truetype(GetPath('MuseoSans-900.otf', '_fonts'), 27)
-        draw.text((10, 0), 'FREE S&H  ', (224, 64, 53), font=font)
+        font = ImageFont.truetype(GetPath('MuseoSans-900.otf', '_fonts'), 54)
+        draw.text((20, 0), 'FREE S&H  ', (224, 64, 53), font=font)
         w1, h1 = TextSize('FREE S&H  ', font)
         
-        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 27)
-        draw.text((10+w1, 0), "ORDERS $75+", (0, 0, 0), font=font)
+        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 54)
+        draw.text((20+w1, 0), "ORDERS $75+", (0, 0, 0), font=font)
 
     item['image'].paste(local, (item['x'], item['y']), local)
 
-    item['y'] += 33
+    item['y'] += 66
     return item
 
 def MakeBanner(item):
-    local = Image.new("RGBA", (340, 75), (0,0,0,0))
+    local = Image.new("RGBA", (680, 150), (0,0,0,0))
     draw = ImageDraw.Draw(local)
 
-    item['y'] += 8
+    item['y'] += 16
 
     #BG
-    img = MakeRectangle((340, 75), radius=[15, 15, 15, 15], fill=item['color'])
+    img = MakeRectangle((680, 150), radius=[15, 15, 15, 15], fill=item['color'])
     local.paste(img, (0, 0), img)
 
     #FG
-    font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 30)
+    font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 60)
 
     if 'Guarantee' in item['banner']:
         w = 25
@@ -663,50 +663,50 @@ def MakeBanner(item):
         w = 30
     banner = WordWrap(item['banner'], width=w)
 
-    text = MaxSize(banner, font, (255, 255, 255), 320, 75)
-    local.paste(text, (10, 0), text)
+    text = MaxSize(banner, font, (255, 255, 255), 640, 150)
+    local.paste(text, (20, 0), text)
 
     item['image'].paste(local, (item['x'], item['y']), local)
     return item
 
 def MakeContact(item):
-    local = Image.new("RGBA", (340, 110), (0,0,0,0))
+    local = Image.new("RGBA", (680, 220), (0,0,0,0))
     draw = ImageDraw.Draw(local)
 
     #BG
     #Blue
-    img = MakeRectangle((120, 110), radius=[15, 15, 0, 0], fill=(14, 118, 188))
+    img = MakeRectangle((240, 220), radius=[15, 15, 0, 0], fill=(14, 118, 188))
     local.paste(img, (0, 0), img)
     #White
-    img = MakeRectangle((220, 110), radius=[0, 0, 15, 15], fill=(232, 231, 234))
-    local.paste(img, (120, 0), img)
+    img = MakeRectangle((440, 220), radius=[0, 0, 15, 15], fill=(232, 231, 234))
+    local.paste(img, (240, 0), img)
 
     #Bug
     ratio = 0.81625
-    width = 115
+    width = 230
     img = Image.open(GetPath('ShopHQ.tif', '_images'), 'r')
     img = img.resize((int(width),int(width*ratio)))
-    local.paste(img, (2, 8), img)
+    local.paste(img, (4, 16), img)
 
     #Website
-    font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 33)
-    draw.text((120+5, 10), "ShopHQ.com", (0, 0, 0), font=font)
+    font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 66)
+    draw.text((240+10, 20), "ShopHQ.com", (0, 0, 0), font=font)
 
     #Phone
-    font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 29)
-    draw.text((120+5, 60), "(800) 474-6762", (0, 0, 0), font=font)
+    font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 58)
+    draw.text((240+10, 120), "(800) 474-6762", (0, 0, 0), font=font)
 
-    item['image'].paste(local, (item['x'], 904), local)
+    item['image'].paste(local, (item['x'], 1808), local)
     return item
 
 def MakeCoupon(item):
     coupon = item['coupon']
     
-    local = Image.new("RGBA", (400, 110), (0,0,0,0))
+    local = Image.new("RGBA", (800, 220), (0,0,0,0))
     draw = ImageDraw.Draw(local)
 
     #BG
-    img = MakeRectangle((400, 110), radius=[15, 15, 15, 15], fill=(232, 231, 234))
+    img = MakeRectangle((800, 220), radius=[15, 15, 15, 15], fill=(232, 231, 234))
     local.paste(img, (0, 0), img)
 
     #FG
@@ -721,39 +721,39 @@ def MakeCoupon(item):
         qr.add_data(coupon['url'])
         qr.make(fit=True)
         qr = qr.make_image(fill_color=(0, 0, 0), back_color=(255, 255, 255, 0)).convert('RGBA')
-        qr = qr.resize((97, 97))
-        local.paste(qr, (7, 7), qr)
+        qr = qr.resize((194, 194))
+        local.paste(qr, (14, 14), qr)
 
         #lines 1 & 2
-        font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 30)
+        font = ImageFont.truetype(GetPath('MuseoSans-700.otf', '_fonts'), 60)
         w1, h1 = TextSize(coupon['line1'], font)
-        text = MaxSize(coupon['line1'], font, (0, 0, 0), 400-115, h1)
-        local.paste(text, (115, 0), text)
+        text = MaxSize(coupon['line1'], font, (0, 0, 0), 800-230, h1)
+        local.paste(text, (230, 0), text)
         w1, h1 = TextSize(coupon['line2'], font)
-        text = MaxSize(coupon['line2'], font, (0, 0, 0), 400-115, h1)
-        local.paste(text, (115, 25), text)
+        text = MaxSize(coupon['line2'], font, (0, 0, 0), 800-230, h1)
+        local.paste(text, (230, 50), text)
 
         #code
-        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 30)
+        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 60)
         w1, h1 = TextSize(f"CODE: {coupon['code']}", font)
-        text = MaxSize(f"CODE: {coupon['code']}", font, (224, 64, 53), 400-115, h1)
-        local.paste(text, (115, 50), text)
+        text = MaxSize(f"CODE: {coupon['code']}", font, (224, 64, 53), 800-230, h1)
+        local.paste(text, (230, 100), text)
 
         #time
-        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 20)
+        font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 40)
         w1, h1 = TextSize(coupon['time'], font)
-        text = MaxSize(coupon['time'], font, (0, 0, 0), 400-115, h1)
-        local.paste(text, (115, 80), text)
+        text = MaxSize(coupon['time'], font, (0, 0, 0), 800-230, h1)
+        local.paste(text, (230, 160), text)
 
-        x = 1920-123-400
-        if item['x'] > 1920/2:
-            x = 123
-        y = random.choice([50, 904])
+        x = 3840-246-800
+        if item['x'] > 3840/2:
+            x = 246
+        y = random.choice([100, 1808])
         item['image'].paste(local, (x, y), local)
     return item
 
 def MakeTower(item):
-    item['image'] = Image.new("RGBA", (1920, 1080), (0,0,0,0))
+    item['image'] = Image.new("RGBA", (3840, 2160), (0,0,0,0))
 
     item = MakeTopline(item)
     item = MakeList(item)
