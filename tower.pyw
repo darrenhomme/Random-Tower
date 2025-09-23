@@ -508,7 +508,7 @@ def MakeTopline(item):
     item['y'] = 246
 
     #BG
-    img = MakeRectangle((680, 460), radius=[15, 15, 15, 15], fill=(232, 231, 234))
+    img = MakeRectangle((680, 460), radius=[30, 30, 30, 30], fill=(232, 231, 234))
     local.paste(img, (0, 0), img)
 
     #HR
@@ -540,7 +540,7 @@ def MakeList(item):
     
     if item['markdown']:
         #BG
-        img = MakeRectangle((680, 76), radius=[15, 0, 0, 15], fill=(232, 231, 234))
+        img = MakeRectangle((680, 76), radius=[30, 0, 0, 30], fill=(232, 231, 234))
         local.paste(img, (0, 0), img)
 
         font = ImageFont.truetype(GetPath('MuseoSans-500.otf', '_fonts'), 50)
@@ -572,7 +572,7 @@ def MakeSale(item):
     if item['markdown']:
         img = MakeRectangle((680, 180), radius=[0, 0, 0, 0],   fill=item['color'])
     else:
-        img = MakeRectangle((680, 180), radius=[15, 0, 0, 15], fill=item['color'])
+        img = MakeRectangle((680, 180), radius=[30, 0, 0, 30], fill=item['color'])
     local.paste(img, (0, 0), img)
 
     #FG
@@ -622,7 +622,7 @@ def MakeShipping(item):
     draw = ImageDraw.Draw(local)
 
     #BG
-    img = MakeRectangle((680, 66), radius=[0, 15, 15, 0], fill=(232, 231, 234))
+    img = MakeRectangle((680, 66), radius=[0, 30, 30, 0], fill=(232, 231, 234))
     local.paste(img, (0, 0), img)
 
     #FG
@@ -649,7 +649,7 @@ def MakeBanner(item):
     item['y'] += 16
 
     #BG
-    img = MakeRectangle((680, 150), radius=[15, 15, 15, 15], fill=item['color'])
+    img = MakeRectangle((680, 150), radius=[30, 30, 30, 30], fill=item['color'])
     local.paste(img, (0, 0), img)
 
     #FG
@@ -675,10 +675,10 @@ def MakeContact(item):
 
     #BG
     #Blue
-    img = MakeRectangle((240, 220), radius=[15, 15, 0, 0], fill=(14, 118, 188))
+    img = MakeRectangle((240, 220), radius=[30, 30, 0, 0], fill=(14, 118, 188))
     local.paste(img, (0, 0), img)
     #White
-    img = MakeRectangle((440, 220), radius=[0, 0, 15, 15], fill=(232, 231, 234))
+    img = MakeRectangle((440, 220), radius=[0, 0, 30, 30], fill=(232, 231, 234))
     local.paste(img, (240, 0), img)
 
     #Bug
@@ -706,7 +706,7 @@ def MakeCoupon(item):
     draw = ImageDraw.Draw(local)
 
     #BG
-    img = MakeRectangle((800, 220), radius=[15, 15, 15, 15], fill=(232, 231, 234))
+    img = MakeRectangle((800, 220), radius=[30, 30, 30, 30], fill=(232, 231, 234))
     local.paste(img, (0, 0), img)
 
     #FG
