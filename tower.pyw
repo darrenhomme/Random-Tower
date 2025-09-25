@@ -805,7 +805,7 @@ def GetWindows():
         windowImages.append( ImageTk.PhotoImage(Image.new("RGBA", (monitor.width, monitor.height), (0,0,0,0))) )
         imageLabels.append( tk.Label(win, image=windowImages[-1], bg='#3b3b3b') )
         imageLabels[-1].pack()
-        windows.append({'window': win, 'image': windowImages[-1], 'label': imageLabels[-1], 'width': monitor.width, 'height': monitor.height, 'x': monitor.x, 'y': monitor.y})
+        windows.append({'window': win, 'image': windowImages[-1], 'frames': [], 'label': imageLabels[-1], 'width': monitor.width, 'height': monitor.height, 'x': monitor.x, 'y': monitor.y})
     return windows
 
 root = tk.Tk()
@@ -820,34 +820,41 @@ windows = GetWindows()
 images    = list(range(2))
 images[0] = Image.new("RGBA", (3840, 2160), (0,0,0,0))
 
+def GetFrames(images):
+    for i in range(len(windows)):
+        frames = []
+        for j in range(len(images)):
+            frames.append(FormatImage(windows[i], images[j]))
+        windows[i]['frames'] = frames
+
 def Disolve(images, alpha=0.0):
-    if alpha < 1.0:
-        blended = Image.blend(images[0], images[1], alpha)
-    else:
-        blended = images[1]
-
     for win in windows:
-        try:
-            tmp = ImageTk.PhotoImage(FormatImage(win, blended))
-            win['label'].config(image=tmp)
-            win['label'].image = tmp
-            win['label'].update()
-            win['image'] = tmp
-        except:
-            pass
+        if alpha < 1.0:
+            blended = Image.blend(win['frames'][0], win['frames'][1], alpha)
+        else:
+            blended = win['frames'][1]
+
+        blended = ImageTk.PhotoImage(blended)
+        win['label'].config(image=blended)
+        win['label'].image = blended
+        win['label'].update()
+        win['image'] = blended
 
     if alpha < 1.0:
-        root.after(50, Disolve, images, alpha + 0.10)
+        root.after(10, Disolve, images, alpha + 0.10)
     else:
         images[0] = images[1]
+    return images
 
-def Update():
+def Update(images):
     item = MakeItem()
     item = MakeTower(item)
     images[1] = item['image']
 
-    Disolve(images)
-        
-    root.after(10000, Update)
+    GetFrames(images)
+    images = Disolve(images)
 
-root.after(0, Update)
+    root.after(10000, Update, images)
+    
+Update(images)
+root.mainloop()
