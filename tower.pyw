@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import random
-import time, datetime
+import datetime
 import sys
 import os
 from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageTk
@@ -9,7 +9,6 @@ import textwrap
 import qrcode
 import tkinter as tk
 from screeninfo import get_monitors
-import keyboard
 
 #make it kind of random
 rng = random.SystemRandom()
@@ -765,25 +764,9 @@ def MakeTower(item):
     item = MakeCoupon(item)
     return item
 
-def ExitOnKey():
-    if keyboard.is_pressed('esc'):
-        root.destroy()
-        sys.exit(0)
-
-def Disolve(images, label):
-    alpha = 0
-    while 1.0 > alpha:
-        blended = ImageTk.PhotoImage(Image.blend(images[0], images[1], alpha))
-        alpha   = alpha + 0.05
-        time.sleep(0.05)
-        label.config(image=blended)
-        label.update()
-        ExitOnKey()
-        
-    blended = ImageTk.PhotoImage(images[1])
-    label.config(image=blended)
-    label.update()
-    return blended
+def ExitRoot(event=None):
+    root.destroy()
+    sys.exit(0)
 
 def FormatImage(screen, image):
     screenwidth  = screen['width']
@@ -825,32 +808,46 @@ def GetWindows():
         windows.append({'window': win, 'image': windowImages[-1], 'label': imageLabels[-1], 'width': monitor.width, 'height': monitor.height, 'x': monitor.x, 'y': monitor.y})
     return windows
 
-images    = list(range(2))
-images[0] = Image.new("RGBA", (1920, 1080), (0,0,0,0))
-
 root = tk.Tk()
 root.config(cursor="none")
 root.withdraw()
 
+root.bind_all("<Escape>", ExitRoot)
+root.bind_all("<Motion>", ExitRoot)
+
 windows = GetWindows()
+
+images    = list(range(2))
+images[0] = Image.new("RGBA", (3840, 2160), (0,0,0,0))
+
+def Disolve(images, alpha=0.0):
+    if alpha < 1.0:
+        blended = Image.blend(images[0], images[1], alpha)
+    else:
+        blended = images[1]
+
+    for win in windows:
+        try:
+            tmp = ImageTk.PhotoImage(FormatImage(win, blended))
+            win['label'].config(image=tmp)
+            win['label'].image = tmp
+            win['label'].update()
+            win['image'] = tmp
+        except:
+            pass
+
+    if alpha < 1.0:
+        root.after(50, Disolve, images, alpha + 0.10)
+    else:
+        images[0] = images[1]
 
 def Update():
     item = MakeItem()
     item = MakeTower(item)
     images[1] = item['image']
 
-    for win in windows:
-        tmp = images.copy()
-        tmp[0] = FormatImage(win, tmp[0])
-        tmp[1] = FormatImage(win, tmp[1])
-        win['image'] = Disolve(tmp, win['label'])
+    Disolve(images)
         
-    images[0] = images[1]
-    for x in range(1000):
-        time.sleep(.01)
-        ExitOnKey()
-
-    root.after(0, Update)
+    root.after(10000, Update)
 
 root.after(0, Update)
-root.mainloop()
